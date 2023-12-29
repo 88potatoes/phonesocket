@@ -92,12 +92,19 @@ phonesocket.register_event('reset_state', (data) => {
 
 ## Functions from index.js
 
-### sendJSON(ws, ...messages)
-``` js
-xsocketserver.onconnect = (ws, req) => {
-    if (ws.device === "desktop") {
-        sendJSON(ws, {command: "init_players", data: players});
-    }
-}
-sendJSON(ws, )
+**sendJSON(ws, ...messages)**
+Sends JSON messages through websocket
+See above XSocketServer.onconnect for example
+
+**ws_send(ws, event, payload)**
+Also sends JSON messages through websocket
+Example
+```js
+ws_send(ws, 'reset_state', true ? 'ready' : 'not_ready')
 ```
+
+**get_id()**
+Get a unique id - from 0 to 10000 (maxed out at 10000 so not technically not unique); is  used internally to differentiate websocket connections.
+
+
+
