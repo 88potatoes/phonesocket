@@ -39,12 +39,40 @@ Example
 ``` js
 const xsocketserver = new XSocketServer({port: 8082});
 
+// when a phone sends an event 'toggle_reset'
 xsocketserver.register_event('phone', 'toggle_reset', (ws, data) => {
     xsocketserver.broadcast_phones('reset_state', 'not_ready')
-    xsocketserver.broadcast_desktops('newgame', Object.keys(coins))
+    xsocketserver.broadcast_desktops('newgame', Object.keys(coins)) // coins is an object
     ws_send(ws, 'reset_state', true ? 'ready' : 'not_ready')
 })
 ```
+
+**XSocketServer.onclose_extra**
+A function that is run upon websocket disconnection
+
+**XSocketServer.onconnect**
+A function that is run upon websocket connection
+
+Example
+```js
+// some dummy code taken from a project
+xsocketserver.onclose_extra = (ws) => {
+    latent_players[ws.ip] = players[ws.id];
+    delete players[ws.id];
+}
+
+xsocketserver.onconnect = (ws, req) => {
+    if (ws.device === "desktop") {
+        sendJSON(ws, 
+        {command: "init_players", data: players}, 
+        {command: "init_walls", data: walls}, 
+        {command: "init_coins", data: Object.values(coins)});
+    } else {
+        //...
+    }
+}
+```
+
 
 
 ## Functions from index.js
