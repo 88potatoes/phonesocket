@@ -6,26 +6,44 @@ Also includes reconnection handling.
 ## XSocketServer
 XSocketServer is a child class of WebSocketServer from 'ws'.
 It provides extra functionality:
-- keeps track of phone connections and desktop connections
-- stores events for handling phone clients and desktop clients
+
+- All phones which connect to an XSocketServer are automatically registered as phone devices
+- All desktops which connect to and XSocketServer are automatically registered as desktop devices
+
+``` js
+# To use import it like
+import { XSocketServer } from 'phonesocket/xserver';
+```
 
 ### Properties and methods
+**XSocketServer.register_event(device, event, callback)**
+Registers an event to be sent by a particular kind of device and the corresponding callback
 ```
-# register_event(device, event, callback)
-# device = 'phone' | 'desktop'
-# event: String - name of event sent from client
-# callback = (ws, data) => {...}
+device = 'phone' | 'desktop'
+event: String - name of event sent from client
+callback = (ws, data) => {...}
+```
+**XSocketServer.broadcast_phones(event, data)**
+Sends a JSON websocket message of the form {"command": [event], "data": [data]} to all phone connections
+```
+event: String
+data: any
+```
+**XSocketServer.broadcast_desktops(event, data)**
+Sends a JSON websocket message of the form {"command": [event], "data": [data]} to all phone connections
+```
+event: String
+data: any
 ```
 Example
-```
+``` js
 const xsocketserver = new XSocketServer({port: 8082});
 
 xsocketserver.register_event('phone', 'toggle_reset', (ws, data) => {
     xsocketserver.broadcast_phones('reset_state', 'not_ready')
     xsocketserver.broadcast_desktops('newgame', Object.keys(coins))
-    ws_send(ws, 'reset_state', players[ws.id].reset_agree ? 'ready' : 'not_ready')
-    }
-)
+    ws_send(ws, 'reset_state', true ? 'ready' : 'not_ready')
+})
 ```
 
 
