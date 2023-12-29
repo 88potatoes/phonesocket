@@ -5,7 +5,7 @@ const {
     parseJSON,
     get_id,
     ws_send
-} = require('./ws-helpers')
+} = require('.')
 const useragent = require('express-useragent')
 
 class XSocketServer extends WebSocketServer {
