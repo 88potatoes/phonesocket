@@ -73,12 +73,27 @@ xsocketserver.onconnect = (ws, req) => {
 }
 ```
 
+## XSocketClient
+Client side websocket object
+Use a tool such as watchify to use node package in client side
 
+### Properties and methods
+**XSocketClient.register_event(event, callback)**
+Registers an event and a correspondign callback
+Example
+``` js
+
+const phonesocket = new XSocketClient('phone', `ws://localhost:8082`)
+const resetbutton = document.getElementById('resetbutton');
+phonesocket.register_event('reset_state', (data) => {
+    resetbutton.innerText = data === 'ready' ? 'READY' : '';
+})
+```
 
 ## Functions from index.js
 
 ### sendJSON(ws, ...messages)
-```
+``` js
 xsocketserver.onconnect = (ws, req) => {
     if (ws.device === "desktop") {
         sendJSON(ws, {command: "init_players", data: players});
