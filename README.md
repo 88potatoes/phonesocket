@@ -1,5 +1,5 @@
 # Phonesocket
-[GitHub]()
+[GitHub](https://github.com/88potatoes/phonesocket)
 JS package for connecting to a server via websocket from phone and desktop.
 The package allows you to differentiate between phone connections and desktop connections.
 Also includes reconnection handling.
